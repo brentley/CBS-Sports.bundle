@@ -1,27 +1,18 @@
-import re, string, datetime
-from PMS import *
-from PMS.Objects import *
-from PMS.Shortcuts import *
-
 VIDEO_PREFIX      = "/video/cbssports"
 BASE_URL = "http://www.cbssports.com"
 VIDEO_PAGE_URL = "http://www.cbssports.com/video/player/play/videos/%s"
-#VIDEO_PAGE_URL = "http://images.cbssports.com/video/uvp/Default.swf?r=843618235797&pid=%s&partner=cbssports&autoPlayVid=true"
-SMIL_URL = "http://release.theplatform.com/content.select?format=SMIL&Tracking=true&balance=false&MBR=true&pid=%s"
-CACHE_INTERVAL    = 1800
 ICON = "icon-default.png"
 
 ####################################################################################################
 def Start():
   Plugin.AddPrefixHandler(VIDEO_PREFIX, MainMenuVideo, "CBS Sports", ICON, "art-default.jpg")
-  Plugin.AddViewGroup("Details", viewMode="InfoList", mediaType="items")
-  MediaContainer.art = R('art-default.jpg')
-  MediaContainer.title1 = 'CBS Sports'
-  HTTP.SetCacheTime(CACHE_INTERVAL)
+  
+  ObjectContainer.art = R('art-default.jpg')
+  ObjectContainer.title1 = 'CBS Sports'
   
 def MainMenuVideo():
-    dir = MediaContainer(mediaType='video')  
-    for item in XML.ElementFromURL(BASE_URL+"/video/player", True, errors='ignore').xpath('//div[@id="channelList"]/ul/li/a'):
+    oc = ObjectContainer()
+    for item in HTML.ElementFromURL(BASE_URL+"/video/player", errors='ignore').xpath('//div[@id="channelList"]/ul/li/a'):
         title = item.text
         if(title != None):
           url = item.get('href')
