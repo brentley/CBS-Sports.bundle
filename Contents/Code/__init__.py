@@ -1,7 +1,8 @@
-VIDEO_PREFIX      = "/video/cbssports"
-BASE_URL = "http://www.cbssports.com"
-VIDEO_PAGE_URL = "http://www.cbssports.com/video/player/play/videos/%s"
-ICON = "icon-default.png"
+RE_CBS_JSON     = Regex('CBSi.app.VideoPlayer.Data = ([.+?])')
+VIDEO_PREFIX    = "/video/cbssports"
+BASE_URL        = "http://www.cbssports.com"
+VIDEO_PAGE_URL  = "http://www.cbssports.com/video/player/play/videos/pid=%s"
+ICON            = "icon-default.png"
 
 ####################################################################################################
 def Start():
@@ -24,30 +25,20 @@ def MainMenuVideo():
                 oc.add(DirectoryObject(key=Callback(VideoSection, url=childUrl), title=childTitle.strip(), thumb=R(ICON)))
     return oc
     
-def VideoSection(sender, url):
-    dir = MediaContainer(viewGroup='Details', mediaType='video')  
+def VideoSection(url):
+    oc = ObjectContainer()
     content = HTTP.Request(BASE_URL+url)
-    index = 25 + content.find("CBSi.app.VideoPlayer.Data")
-    start = 1 + content.find("[", index)
-    end = content.find("]", start)
-    items = content[start:end].split("},{")
-    for item in items:
-        pieces = item.split(",")
-        metaData = dict()
-        for piece in pieces:
-            tokens = piece.split('":"')
-            if(len(tokens) > 1):
-              metaData[tokens[0].replace('"','')] = tokens[1].replace('"','')
-            
-        if(metaData.has_key('title')):
-          title = metaData['title'].replace('}','')
-          thumb = metaData['large_thumbnail']
-          summary = metaData['description']
-          durationStr = metaData['duration']
-          duration = convert(durationStr)
-          pid = metaData['pid']
-          dir.Append(Function(VideoItem(Video, title, thumb=thumb, summary=summary, duration=duration), pid=pid))
-    return dir
+    details = JSON.ObjectFromString(RE_CBS_JSON.search(content).group(1))
+    for item in details:
+        title = item['title']
+        thumbs = [item['large_thumbnail'], item['medium_thumbnail'], item['small_thumbnail']]
+        summary = item['description']
+        duration = convert(item['duration'])
+        pid = item['pid']
+        video_url = VIDEO_PAGE_URL % pid
+        oc.add(VideoClipObject(url=video_url, title=title, summary=summary, duration=duration,
+            thumb=Resource.ContentsOfURLWithFallback(url=thumbs, fallback=ICON)))
+    return oc
 
 # Convert the h:m:s string to milli-sec
 def convert(durationStr):
