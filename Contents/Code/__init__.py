@@ -16,15 +16,13 @@ def MainMenuVideo():
         title = item.text
         if(title != None):
           url = item.get('href')
-          dir.Append(Function(DirectoryItem(VideoSection, title=title.strip(), thumb=R(ICON)),  url=url))
+          oc.add(DirectoryObject(key=Callback(VideoSection, url=url), title=title.strip(), thumb=R(ICON)))
           for child in item.xpath('../ul/li/a'):
             if child.text != None:
-                Log("Child:"+str(child.text))
                 childTitle = title + ": "+child.text
-                #childTitle = title
                 childUrl = child.get('href')
-                dir.Append(Function(DirectoryItem(VideoSection, title=childTitle.strip(), thumb=R(ICON)),  url=childUrl))
-    return dir
+                oc.add(DirectoryObject(key=Callback(VideoSection, url=childUrl), title=childTitle.strip(), thumb=R(ICON)))
+    return oc
     
 def VideoSection(sender, url):
     dir = MediaContainer(viewGroup='Details', mediaType='video')  
