@@ -49,21 +49,6 @@ def VideoSection(sender, url):
           dir.Append(Function(VideoItem(Video, title, thumb=thumb, summary=summary, duration=duration), pid=pid))
     return dir
 
-# Extract the video source from the SMIL file. Sometimes direct flv file, sometimes rtmp.
-def Video(sender, pid):
-    smilUrl = SMIL_URL % pid
-    for item in XML.ElementFromURL(smilUrl, True, errors='ignore',cacheTime=0).xpath('//switch/ref'):
-        source = item.get('src')
-        if source.startswith("http") and source.endswith(".flv"):
-            return Redirect(source)
-        elif source.startswith("rtmp"):
-            player = source.split('?')[0]
-            clip = source.split("<break>")[1].replace('.flv','')
-            width = item.get('width')
-            height = item.get('height')
-            return Redirect(RTMPVideoItem(player, clip, width=width, height=height))
-    return Redirect("")
-
 # Convert the h:m:s string to milli-sec
 def convert(durationStr):
     tokens = durationStr.split(":")
