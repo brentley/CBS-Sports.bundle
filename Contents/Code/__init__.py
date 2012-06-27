@@ -6,10 +6,10 @@ ICON            = "icon-default.png"
 
 ####################################################################################################
 def Start():
-  Plugin.AddPrefixHandler(VIDEO_PREFIX, MainMenuVideo, "CBS Sports", ICON, "art-default.jpg")
+    Plugin.AddPrefixHandler(VIDEO_PREFIX, MainMenuVideo, "CBS Sports", ICON, "art-default.jpg")
   
-  ObjectContainer.art = R('art-default.jpg')
-  ObjectContainer.title1 = 'CBS Sports'
+    ObjectContainer.art = R('art-default.jpg')
+    ObjectContainer.title1 = 'CBS Sports'
   
 def MainMenuVideo():
     oc = ObjectContainer()
