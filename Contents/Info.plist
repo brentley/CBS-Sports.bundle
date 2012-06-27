@@ -4,7 +4,6 @@
 <dict>
 	<key>CFBundleIdentifier</key>
 	<string>com.plexapp.plugins.cbssports</string>
-	</dict>
 	<key>PlexClientPlatformExclusions</key>
 	<string>Roku</string>
 	<key>PlexClientPlatforms</key>
@@ -12,8 +11,8 @@
 	<key>PlexFrameworkVersion</key>
 	<string>2</string>
 	<key>PlexFrameworkFlags</key>
-    <array>
+	<array>
         <string>UseRealRTMP</string>
-    </array>
+	</array>
 </dict>
 </plist>
