@@ -29,7 +29,6 @@ def VideoSection(url):
     oc = ObjectContainer()
     content = HTTP.Request(BASE_URL+url).content
     json_string = RE_CBS_JSON.search(content).group(1)
-    Log(json_string)
     details = JSON.ObjectFromString(json_string)
     for item in details:
         title = item['title']
