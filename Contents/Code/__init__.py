@@ -1,4 +1,4 @@
-RE_CBS_JSON     = Regex('CBSi.app.VideoPlayer.Data = ([.+?])')
+RE_CBS_JSON     = Regex('CBSi.app.VideoPlayer.Data = (\[.+?\])')
 VIDEO_PREFIX    = "/video/cbssports"
 BASE_URL        = "http://www.cbssports.com"
 VIDEO_PAGE_URL  = "http://www.cbssports.com/video/player/play/videos/pid=%s"
@@ -27,8 +27,10 @@ def MainMenuVideo():
     
 def VideoSection(url):
     oc = ObjectContainer()
-    content = HTTP.Request(BASE_URL+url)
-    details = JSON.ObjectFromString(RE_CBS_JSON.search(content).group(1))
+    content = HTTP.Request(BASE_URL+url).content
+    json_string = RE_CBS_JSON.search(content).group(1)
+    Log(json_string)
+    details = JSON.ObjectFromString(json_string)
     for item in details:
         title = item['title']
         thumbs = [item['large_thumbnail'], item['medium_thumbnail'], item['small_thumbnail']]
