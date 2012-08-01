@@ -12,7 +12,11 @@
 	<string>2</string>
 	<key>PlexFrameworkFlags</key>
 	<array>
-        <string>UseRealRTMP</string>
+        	<string>UseRealRTMP</string>
+	</array>
+	<key>PlexPluginTesterFlags</key>
+	<array>
+		<string>NoURLServices</string>
 	</array>
 </dict>
 </plist>
