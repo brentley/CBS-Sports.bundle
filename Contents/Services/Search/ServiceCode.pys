@@ -1,0 +1,3 @@
+SEARCH_URL = "http://www.cbssports.com/info/search#q=%s&fq=type:Video"
+
+def Search(query):
