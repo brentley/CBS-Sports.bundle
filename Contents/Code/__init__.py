@@ -7,10 +7,10 @@ ICON            = "icon-default.png"
 ####################################################################################################
 def Start():
     Plugin.AddPrefixHandler(VIDEO_PREFIX, MainMenuVideo, "CBS Sports", ICON, "art-default.jpg")
-  
+
     ObjectContainer.art = R('art-default.jpg')
     ObjectContainer.title1 = 'CBS Sports'
-  
+
 def MainMenuVideo():
     oc = ObjectContainer()
     for item in HTML.ElementFromURL(BASE_URL+"/video/player", errors='ignore').xpath('//div[@id="channelList"]/ul/li/a'):
@@ -24,7 +24,7 @@ def MainMenuVideo():
                 childUrl = child.get('href')
                 oc.add(DirectoryObject(key=Callback(VideoSection, url=childUrl), title=childTitle.strip(), thumb=R(ICON)))
     return oc
-    
+
 def VideoSection(url):
     oc = ObjectContainer()
     content = HTTP.Request(BASE_URL+url).content
