@@ -5,6 +5,10 @@
     <key>Search</key>
 	<dict>
 		<key>CBS Sports</key>
+		<dict>
+			<key>Identifier</key>
+			<string>com.plexapp.plugins.cbssports</string>
+		</dict>
 	</dict>
 </dict>
 </plist>
