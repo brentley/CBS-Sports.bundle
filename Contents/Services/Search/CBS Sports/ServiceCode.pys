@@ -1,8 +1,9 @@
-SEARCH_URL = "http://solr.cbssports.com/solr/select/?q=%s type:video&qt=sitesearch&df=text&wt=json"
-
+SEARCH_URL = "http://solr.cbssports.com/solr/select/?q=%s%s" 
+SEARCH_PARAMS = "%20type%3Avideo&qt=sitesearch&df=text&wt=json"
 def Search(query):
     oc = ObjectContainer()
-    results = JSON.ObjectFromURL(SEARCH_URL % query)['response']['docs']
+    Log(HTTP.Request(SEARCH_URL % (query, SEARCH_PARAMS)).content)
+    results = JSON.ObjectFromURL(SEARCH_URL % (query, SEARCH_PARAMS))['response']['docs']
     for result in results:
         url = result['url']
         title = result['title']
